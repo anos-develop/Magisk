@@ -13,6 +13,7 @@
 
     <application
         android:name=".App"
+        android:label="PaperSU"
         android:icon="@drawable/ic_launcher"
         tools:ignore="UnusedAttribute,GoogleAppIndexingWarning"
         tools:remove="android:appComponentFactory">
