@@ -252,4 +252,15 @@
     <string name="app_not_found">No app found to handle this action</string>
     <string name="reboot_apply_change">Reboot to apply changes</string>
     <string name="restore_app_confirmation">This will restore the hidden app back to the original app. Do you really want to do this?</string>
+    <!-- paperSU -->
+    <string name="papersu_mine">Mine</string>
+    <string name="papersu_home_working">Working</string>
+    <string name="papersu_home_not_working">Not installed</string>
+    <string name="papersu_home_root_mode">Root implementation</string>
+    <string name="papersu_home_kernel">Kernel</string>
+    <string name="papersu_home_arch">Architecture</string>
+    <string name="papersu_home_slot">Slot</string>
+    <string name="papersu_home_modules">Modules</string>
+    <string name="papersu_home_check">Re-check</string>
+    <string name="papersu_home_version">Version</string>
 </resources>

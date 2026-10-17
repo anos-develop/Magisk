@@ -46,11 +46,8 @@ import com.topjohnwu.magisk.R
 import com.topjohnwu.magisk.arch.VMFactory
 import com.topjohnwu.magisk.core.Info
 import com.topjohnwu.magisk.core.model.module.LocalModule
-import com.topjohnwu.magisk.ui.home.HomeScreen
-import com.topjohnwu.magisk.ui.home.HomeViewModel
-import com.topjohnwu.magisk.ui.install.InstallViewModel
-import com.topjohnwu.magisk.ui.log.LogScreen
-import com.topjohnwu.magisk.ui.log.LogViewModel
+import com.topjohnwu.magisk.ui.home.PaperSUHomeScreen
+import com.topjohnwu.magisk.ui.home.PaperSUMineScreen
 import com.topjohnwu.magisk.ui.module.ModuleScreen
 import com.topjohnwu.magisk.ui.module.ModuleViewModel
 import com.topjohnwu.magisk.ui.navigation.CollectNavEvents
@@ -62,12 +59,15 @@ import com.topjohnwu.magisk.ui.superuser.SuperuserViewModel
 import kotlinx.coroutines.launch
 import com.topjohnwu.magisk.core.R as CoreR
 
+// paperSU: 导航改成纸SU 的顺序 —— 主页 | 超级用户 | 模块 | 设置 | 我的。
+// 原来的顺序是 模块 | 超级用户 | 主页 | 日志 | 设置，而且有个「日志」页。
+// 纸SU 不要「日志」页（那份日志在设置里能看），换成「我的」。
 enum class Tab(val titleRes: Int, val iconRes: Int) {
-    MODULES(CoreR.string.modules, R.drawable.ic_module),
-    SUPERUSER(CoreR.string.superuser, CoreR.drawable.ic_superuser),
     HOME(CoreR.string.section_home, R.drawable.ic_home),
-    LOG(CoreR.string.logs, R.drawable.ic_bug),
-    SETTINGS(CoreR.string.settings, R.drawable.ic_settings);
+    SUPERUSER(CoreR.string.superuser, CoreR.drawable.ic_superuser),
+    MODULES(CoreR.string.modules, R.drawable.ic_module),
+    SETTINGS(CoreR.string.settings, R.drawable.ic_settings),
+    MINE(CoreR.string.papersu_mine, R.drawable.ic_manager);
 }
 
 @Composable
@@ -203,14 +203,9 @@ fun MainScreen(
             ) {
                 when (visibleTabs[page]) {
                     Tab.HOME -> {
-                        val vm: HomeViewModel = viewModel(factory = VMFactory)
-                        val installVm: InstallViewModel = viewModel(factory = VMFactory)
-                        LaunchedEffect(isCurrentPage) {
-                            if (isCurrentPage) vm.startLoading()
-                        }
-                        CollectNavEvents(vm, navigator)
-                        CollectNavEvents(installVm, navigator)
-                        HomeScreen(vm, installVm)
+                        // paperSU: 首页换成纸SU 自己的卡片式布局。
+                        // Magisk 原来的 HomeScreen 仍然保留在仓库里（没删），只是不再挂到导航上。
+                        PaperSUHomeScreen()
                     }
                     Tab.SUPERUSER -> {
                         val activity = LocalActivity.current as? ComponentActivity
@@ -235,13 +230,6 @@ fun MainScreen(
                             contentFocusRequester = superuserContentFocusRequester,
                         )
                     }
-                    Tab.LOG -> {
-                        val vm: LogViewModel = viewModel(factory = VMFactory)
-                        LaunchedEffect(isCurrentPage) {
-                            if (isCurrentPage) vm.startLoading()
-                        }
-                        LogScreen(vm)
-                    }
                     Tab.MODULES -> {
                         val vm: ModuleViewModel = viewModel(factory = VMFactory)
                         LaunchedEffect(isCurrentPage) {
@@ -263,6 +251,12 @@ fun MainScreen(
                         }
                         CollectNavEvents(vm, navigator)
                         SettingsScreen(vm)
+                    }
+                    Tab.MINE -> {
+                        PaperSUMineScreen(
+                            versionString = Info.env.versionString,
+                            isActive = Info.env.isActive,
+                        )
                     }
                 }
             }

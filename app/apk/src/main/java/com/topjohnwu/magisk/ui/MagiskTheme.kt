@@ -94,7 +94,9 @@ fun dynamicColorScheme(
     )
 }
 
-val MagiskAccentColor = Color(0xFF00AF9C)
+// paperSU: 整套 Material 配色都由这一个种子色生成，换掉它就等于换整套主题。
+// 原来是 Magisk 的青绿 0xFF00AF9C，现在是纸SU 的蓝 0xFF4C6FFF。
+val MagiskAccentColor = Color(0xFF4C6FFF)
 
 object ThemeState {
     var colorMode by mutableIntStateOf(Config.colorMode)
