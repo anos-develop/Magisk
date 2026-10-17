@@ -79,12 +79,17 @@ object Info {
         val isDebug: Boolean = false,
         code: Int = -1
     ) {
-        val versionCode = when {
-            code < Const.Version.MIN_VERCODE -> -1
-            isRooted -> code
-            else -> -1
-        }
-        val isUnsupported = code > 0 && code < Const.Version.MIN_VERCODE
+        // paperSU: 原来这里有个 MIN_VERCODE 门槛，低于它就判定"不受支持"。
+        //
+        // 那是给 Magisk 官方发行版用的号段检查。纸SU 用的是自己编的 daemon，
+        // build.py 把 versionCode 写死成 1000000，跟那个号段本来就没关系；
+        // 而对不上就会让界面弹出"需要修复运行环境"。
+        //
+        // 纸SU 判断环境可用与否只看两件事：拿得到 root，daemon 自报了版本号。
+        val versionCode = if (isRooted) code else -1
+
+        // paperSU: 纸SU 没有"daemon 版本不受支持"这种概念，恒 false。
+        val isUnsupported = false
         val isActive = versionCode > 0
     }
 
