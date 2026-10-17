@@ -54,10 +54,12 @@ class HomeViewModel(
     companion object {
         private var checkedEnv = false
 
+        // paperSU: 原来这里拿 daemon 的版本号跟 app 的版本号比，矮一截就判 OUTDATED，
+        // 界面于是变成"修复运行环境"。dev 构建里 build.py 把版本号硬写成 1000000，
+        // boot 里那份又是另一次构建出来的，两个数字一对不齐就天天提示。
+        // 纸SU 不追 Magisk 的版本号，只关心环境到底能不能用。
         fun computeMagiskState() = when {
-            Info.isRooted && Info.env.isUnsupported -> State.OUTDATED
             !Info.env.isActive -> State.INVALID
-            Info.env.versionCode < BuildConfig.APP_VERSION_CODE -> State.OUTDATED
             else -> State.UP_TO_DATE
         }
 
