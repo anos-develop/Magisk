@@ -285,15 +285,14 @@ class MainActivity : ComponentActivity(), SplashScreenHost {
     private fun showUnsupportedMessage() {
         val messages = mutableListOf<Pair<Int, Int>>()
 
-        if (Info.env.isUnsupported) {
-            messages.add(CoreR.string.unsupport_magisk_title to CoreR.string.unsupport_magisk_msg)
-        }
-        if (!Info.isEmulator && Info.env.isActive && System.getenv("PATH")
-                ?.split(':')
-                ?.filterNot { File("$it/magisk").exists() }
-                ?.any { File("$it/su").exists() } == true) {
-            messages.add(CoreR.string.unsupport_general_title to CoreR.string.unsupport_other_su_msg)
-        }
+        // paperSU: 这两条都去掉了。
+        //
+        // 第一条是"daemon 版本号不在 Magisk 号段里"—— 纸SU 的 daemon 本来就不在，
+        // 见 Info.Env 里的说明。
+        //
+        // 第二条更严重：原来的逻辑是"PATH 里能找到一个 su、但同目录下没有 magisk 文件，
+        // 就判定你装了别的 root 方案并弹不受支持"。而纸SU 的 Magisk 模式恰恰就是靠
+        // 系统里那份 su（Magisk/KernelSU 提供的），4.x 机器上这条【必然命中】。
         if (applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM != 0) {
             messages.add(CoreR.string.unsupport_general_title to CoreR.string.unsupport_system_app_msg)
         }
