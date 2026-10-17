@@ -16,7 +16,8 @@ import java.util.jar.JarFile
 
 class ShellInit : Shell.Initializer() {
     override fun onInit(context: Context, shell: Shell): Boolean {
-        if (shell.isRoot) {
+        // paperSU: 不再依赖 libsu 的 shell.isRoot —— 由 Info 自己跑 id 判断。
+        if (Info.detectRoot(shell)) {
             Info.isRooted = true
             RootUtils.bindTask?.let { shell.execTask(it) }
             RootUtils.bindTask = null
@@ -41,7 +42,10 @@ class ShellInit : Shell.Initializer() {
             }
 
             if (shell.isRoot) {
-                add("export MAGISKTMP=\$(magisk --path)")
+                // paperSU: 纸SU 的 daemon 路径不一定能通过 `magisk --path` 问出来
+                // （4.x 机器上那份 magisk 是系统里的 su 提供的，没有这个子命令），
+                // 问不到就用 /debug_ramdisk。后面所有脚本只把 MAGISKTMP 当目录用。
+                add("export MAGISKTMP=\$(magisk --path 2>/dev/null || echo /debug_ramdisk)")
                 // Test if we can properly execute stuff in /data
                 Info.noDataExec = !shell.newJob()
                     .add("$localBB sh -c '$localBB true'").exec().isSuccess
