@@ -44,7 +44,12 @@ jobs:
           name: ${{ github.sha }}
           path: |
             out
-            native/out
+            native/out/arm64-v8a/magisk
+            native/out/arm64-v8a/magiskinit
+            native/out/arm64-v8a/magiskboot
+            native/out/arm64-v8a/magiskpolicy
+            native/out/arm64-v8a/busybox
+            native/out/arm64-v8a/init-ld
           compression-level: 9
 
       - name: Upload mapping and native debug symbols
@@ -100,7 +105,12 @@ jobs:
           name: ${{ github.sha }}
           path: |
             out
-            native/out
+            native/out/arm64-v8a/magisk
+            native/out/arm64-v8a/magiskinit
+            native/out/arm64-v8a/magiskboot
+            native/out/arm64-v8a/magiskpolicy
+            native/out/arm64-v8a/busybox
+            native/out/arm64-v8a/init-ld
 
       - name: Enable KVM group perms
         run: .github/kvm.sh
@@ -138,7 +148,12 @@ jobs:
           name: ${{ github.sha }}
           path: |
             out
-            native/out
+            native/out/arm64-v8a/magisk
+            native/out/arm64-v8a/magiskinit
+            native/out/arm64-v8a/magiskboot
+            native/out/arm64-v8a/magiskpolicy
+            native/out/arm64-v8a/busybox
+            native/out/arm64-v8a/init-ld
 
       - name: Enable KVM group perms
         run: .github/kvm.sh
@@ -180,7 +195,12 @@ jobs:
           name: ${{ github.sha }}
           path: |
             out
-            native/out
+            native/out/arm64-v8a/magisk
+            native/out/arm64-v8a/magiskinit
+            native/out/arm64-v8a/magiskboot
+            native/out/arm64-v8a/magiskpolicy
+            native/out/arm64-v8a/busybox
+            native/out/arm64-v8a/init-ld
 
       - name: Enable KVM group perms
         run: .github/kvm.sh
